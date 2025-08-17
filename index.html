@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>主页</title>
+        <style type="text/css">
+        	body{
+                text-align: center;
+                color: #2196F3;
+                background-color: white;
+                margin: 0;
+                min-height: 100vh;
+                background: linear-gradient(0deg, #FFFFFF 0%, #FFFFFF 100%);
+            }
+            .title{
+                background: linear-gradient(to right, #90CBF9, #37479E);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                -webkit-text-fill-color: transparent;
+                font-size: 48px;
+                font-weight: bold;
+            }
+            .container {
+			    display: flex;
+                flex-direction: column; /* 垂直排列子元素 */
+                align-items: center;    /* 水平居中 */
+                justify-content: center; /* 垂直居中（如果容器有高度） */
+                min-height: 100vh;      /* 可选：使容器至少和视口一样高 */     /* 嗯，这里就由女秘书写吧 */
+			}
+            .crad{
+                background-color: #E6E6E6;
+                height: auto;
+                width: 90%;
+                border-radius: 20px;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            }
+            p{
+                background: linear-gradient(to right, #1D83D5, #37479E);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                -webkit-text-fill-color: transparent;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .btn {
+                display: inline-block;  /* 让链接可以设置宽度和高度 */
+                padding: 10px 20px;    /* 内边距 */
+                background-color: #46A7F5; /* 背景色 */
+                color: white;          /* 文字颜色 */
+                text-align: center;    /* 文字居中 */
+                text-decoration: none; /* 去掉下划线 */
+                border: none;         /* 去掉边框 */
+                border-radius: 5px;    /* 圆角 */
+                font-size: 16px;      /* 字体大小 */
+                cursor: pointer;      /* 鼠标指针变为手形 */
+                transition: background-color 0.3s; /* 过渡效果 */
+            }
+  
+            .btn:hover {
+                background-color: #1D83D5; /* 鼠标悬停时的背景色 */
+            }
+            .announcement-bar {
+                width: 90%;
+                overflow: hidden;
+                white-space: nowrap;
+                background-color: #E6E6E6;
+                padding: 10px 0;
+                border: 0px solid #46A7F5;
+                border-radius: 20px;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            }
+  
+            .announcement-content {
+                display: inline-block;
+                padding-left: 100%;
+                animation: scroll 15s linear infinite;
+            }
+  
+            @keyframes scroll {
+                0%   { transform: translateX(0); }
+                100% { transform: translateX(-100%); }
+            }
+  
+            .announcement-content span {
+                margin-right: 50px;
+                color: #1D83D5;
+                font-weight: bold;
+            }
+  
+            .announcement-bar:hover .announcement-content {
+                animation-play-state: paused;
+            }
+        </style>
+	</head>
+	<body>
+		<div class="title"><br>
+			大鹏天创社团
+		</div><br>
+        <!--zhl这里是通知栏-->
+        <div class="container">
+        <div class="announcement-bar">
+        <div class="announcement-content">
+            <span>📢 普通公告：网站处于建设时期，可能存在多端不适应情况，请谅解</span>
+            <span>✅ 网站创建成功，将有@小云进行维护及更行工作</span>
+            <span>⚠️ 请注意防范网络诈骗，勿泄露个人信息</span>
+        </div>
+        </div><br>
+        
+        <div class="crad">
+            <h1>入团文档</h1>
+            <p>用于宣传或新手查看使用,主要记录了如何加入团队，关于团队等信息</p>
+            <a href="rt.html" class="btn">点击查看</a>
+            <br><br>
+        </div><br>
+        <div class="crad">
+        	<h1>反馈中心</h1>
+            <p>说出你的反馈内容，为团队提谋划策，我们将收取你的建议，并改进我们</p>
+            <a href="yj.html" class="btn">点击前往</a>
+            <br><br>
+        </div><br>
+        <div class="crad">
+        	<h1>网易开发者社区</h1>
+            <p>网易开发者社区快速入口</p>
+            <a href="https://mc.163.com/m/dev/index.html" class="btn">点击查看</a>
+            <br><br>
+        </div><br>
+        <div class="crad">
+        	<h1>有用的工具</h1>
+            <p>内容来自"工具哇"这些工具可能有助于你开发</p>
+            <a href="https://toolwa.com" class="btn">点击前往</a>
+            <br><br>
+        </div>
+        <p>---我是有底线的---</p>
+        </div>
+	</body>
+</html>
