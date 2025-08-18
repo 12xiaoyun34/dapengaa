@@ -11,7 +11,7 @@
                 background-color: white;
                 margin: 0;
                 min-height: 100vh;
-                background: linear-gradient(0deg, #FFFFFF 0%, #FFFFFF 100%);
+                background: linear-gradient(135deg, #BCE0FB 0%, #E1BEE7 100%);
             }
             .title{
                 background: linear-gradient(to right, #90CBF9, #37479E);
@@ -30,11 +30,15 @@
                 min-height: 100vh;      /* 可选：使容器至少和视口一样高 */     /* 嗯，这里就由女秘书写吧 */
 			}
             .crad{
-                background-color: #E6E6E6;
+                background-color: rgba(255, 255, 255, 0.5);
                 height: auto;
                 width: 90%;
                 border-radius: 20px;
                 box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+                display: flex;
+                flex-direction: column; /* 垂直排列子元素 */
+                align-items: center;    /* 水平居中 */
+                justify-content: center;
             }
             p{
                 background: linear-gradient(to right, #1D83D5, #37479E);
@@ -53,7 +57,7 @@
                 text-align: center;    /* 文字居中 */
                 text-decoration: none; /* 去掉下划线 */
                 border: none;         /* 去掉边框 */
-                border-radius: 5px;    /* 圆角 */
+                border-radius: 50px;    /* 圆角 */
                 font-size: 16px;      /* 字体大小 */
                 cursor: pointer;      /* 鼠标指针变为手形 */
                 transition: background-color 0.3s; /* 过渡效果 */
@@ -61,12 +65,13 @@
   
             .btn:hover {
                 background-color: #1D83D5; /* 鼠标悬停时的背景色 */
+                border: 3px solid #1971B6
             }
             .announcement-bar {
                 width: 90%;
                 overflow: hidden;
                 white-space: nowrap;
-                background-color: #E6E6E6;
+                background-color: rgba(255, 255, 255, 0.5);
                 padding: 10px 0;
                 border: 0px solid #46A7F5;
                 border-radius: 20px;
@@ -96,22 +101,30 @@
             i{
                 font-size:50px;
                 color: #46A7F5;
+                text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            }
+            h1{
+                background-color: #F5F5F5;
+                border-radius: 20px;
+                width: 40%;
+                height: auto;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
             }
         </style>
 	</head>
 	<body>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 		<div class="title"><br>
-			大鹏天创社团
+			🌠大鹏天创社团🌠
 		</div><br><br>
         <!--zhl这里是通知栏-->
         <div class="container">
         <div class="announcement-bar">
         <div class="announcement-content">
-            <span>📢 普通公告：网站处于建设时期，可能存在多端不适应情况，请谅解</span>
-            <span>✅ 网站创建成功，将有@小云进行维护及更行工作</span>
-            <span>⚠️ 请注意防范网络诈骗，勿泄露个人信息</span>
-            <span>⚠️ 反馈系统还在维护中,如需反馈，可在交流群内反馈</span>
+            <span>普通公告：网站处于建设时期，可能存在多端不适应情况，请谅解</span>
+            <span>网站创建成功，将有@小云进行维护及更行工作</span>
+            <span>请注意防范网络诈骗，勿泄露个人信息</span>
+            <span>反馈系统还在维护中,如需反馈，可在交流群内反馈</span>
         </div>
         </div><br>
         
@@ -142,8 +155,15 @@
             <p>内容来自"工具哇"这些工具可能有助于你开发</p>
             <a href="https://toolwa.com" class="btn">点击前往</a>
             <br><br>
+        </div><br>
+        <div class="crad">
+        	<br><i class="fas fa-tag"></i>
+            <h1>关于团队</h1>
+            <p>查看一些有关于团队的一些信息</p>
+            <a href="1.html" class="btn">点击查看</a>
+            <br><br>
         </div>
-        <p>---我是有底线的---</p>
+        <p>&copy该网站属于大鹏天创工作室，未经允许不可盗用</p>
         </div>
 	</body>
 </html>
