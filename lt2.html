@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线聊天室</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .chat-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        .chat-embed-wrapper {
+            padding: 0;
+            margin: 0;
+            height: 500px; /* 固定高度为500px */
+            overflow: hidden;
+        }
+        .minnit-chat-sembed {
+            display: block !important;
+            width: 100% !important;
+            height: 500px !important; /* 确保高度为500px */
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .powered-by-minnit {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #666;
+            background: white;
+        }
+        .powered-by-minnit a {
+            color: #a777e3;
+            text-decoration: none;
+        }
+        .instructions {
+            background-color: #fff;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 1000px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            🎉 欢迎来到在线聊天室 🎉
+        </div>
+        
+        <!-- Minnit Chat 嵌入区域 -->
+        <div class="chat-embed-wrapper">
+            <script src="https://minnit.chat/js/embed.js?c=1752216300" defer></script>
+            <span class="minnit-chat-sembed" 
+                  data-chatname="https://organizations.minnit.chat/542487773900034/c/Main?embed" 
+                  data-style="width:100%; height:500px; border:none; background:white;"
+                  data-version="1.52">聊天加载中...</span>
+        </div>
+        
+        <p class="powered-by-minnit">
+            <a href="https://minnit.chat" target="_blank">由 Minnit Chat 提供技术支持</a>
+        </p>
+    </div>
+
+    <div class="instructions">
+        <h3>使用说明：</h3>
+        <ol>
+            <li>在下方输入框中输入您的昵称和消息</li>
+            <li>点击发送按钮或按Enter键发送消息</li>
+            <li>将本页面链接分享给朋友即可一起聊天</li>
+        </ol>
+    </div>
+
+    <script>
+        // 确保聊天框完全加载
+        document.addEventListener('DOMContentLoaded', function() {
+            // 移除之前可能干扰的样式
+            const styleOverrides = `
+                .minnit-chat-sembed iframe {
+                    width: 100% !important;
+                    height: 500px !important;
+                    border: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+            `;
+            const styleElement = document.createElement('style');
+            styleElement.innerHTML = styleOverrides;
+            document.head.appendChild(styleElement);
+        });
+    </script>
+</body>
+</html>
