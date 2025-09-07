@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大鹏天创官方论坛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #2980b9;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #27ae60;
+            --warning-color: #e67e22;
+            --danger-color: #e74c3c;
+            --gray-light: #f8f9fa;
+            --gray: #7f8c8d;
+            --border-radius: 6px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 4px solid var(--secondary-color);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: var(--secondary-color);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            background: linear-gradient(to right, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header i {
+            margin-right: 10px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition);
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #d35400;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .auth-status {
+            padding: 12px 15px;
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .auth-status i {
+            margin-right: 10px;
+            color: var(--gray);
+        }
+        
+        .auth-status.authenticated {
+            background-color: rgba(39, 174, 96, 0.2);
+            color: var(--success-color);
+        }
+        
+        .post {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .post-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .post-meta {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-meta i {
+            margin-right: 5px;
+        }
+        
+        .reply {
+            background-color: var(--gray-light);
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: var(--border-radius);
+            border-left: 3px solid var(--gray);
+        }
+        
+        .reply-meta {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .reply-meta i {
+            margin-right: 5px;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+            margin: 25px 0;
+        }
+        
+        .flex {
+            display: flex;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .flex {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <h1>大鹏天创论坛</h1>
+            </div>
+            <p class="subtitle">技术、日常、经验分享平台</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 1. 认证区域 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-user-circle"></i>
+                用户认证
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> 邮箱</label>
+                    <input type="email" id="email" placeholder="请输入您的邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> 密码</label>
+                    <input type="password" id="password" placeholder="请输入您的密码">
+                </div>
+                
+                <div class="flex">
+                    <button class="btn btn-success" onclick="signUp()">
+                        <i class="fas fa-user-plus"></i> 注册
+                    </button>
+                    <button class="btn" onclick="signIn()">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <button class="btn btn-danger" onclick="signOut()">
+                        <i class="fas fa-sign-out-alt"></i> 登出
+                    </button>
+                </div>
+                
+                <div id="auth-status" class="auth-status">
+                    <i class="fas fa-info-circle"></i> 未登录
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 发帖区域 (默认隐藏) -->
+        <div class="card" style="display: none;" id="postSection">
+            <div class="card-header">
+                <i class="fas fa-edit"></i>
+                发表新帖
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="postTitle"><i class="fas fa-heading"></i> 标题</label>
+                    <input type="text" id="postTitle" placeholder="请输入帖子标题">
+                </div>
+                
+                <div class="form-group">
+                    <label for="postContent"><i class="fas fa-comment"></i> 内容</label>
+                    <textarea id="postContent" placeholder="请输入帖子内容" rows="4"></textarea>
+                </div>
+                
+                <button class="btn" onclick="createPost()">
+                    <i class="fas fa-paper-plane"></i> 发布
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. 帖子列表区域 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i>
+                帖子列表
+            </div>
+            <div class="card-body">
+                <div id="postsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化 Supabase 
+        const supabaseUrl = 'https://aczncyljzemappjvgkkt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjem5jeWxqemVtYXBwanZna2t0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNTIzMzcsImV4cCI6MjA3MjgyODMzN30.n3aHiWy1xf6ofM6nRnBlhjs8U0PAz35u25YVmXo3kBY';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 检查用户登录状态
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            updateAuthStatus(session);
+        });
+
+        // 监听认证状态变化
+        supabase.auth.onAuthStateChange((event, session) => {
+            updateAuthStatus(session);
+            if (session) {
+                loadPosts(); // 登录后加载帖子
+            }
+        });
+
+        // 更新页面认证状态显示
+        function updateAuthStatus(session) {
+            const authStatusEl = document.getElementById('auth-status');
+            const postSectionEl = document.getElementById('postSection');
+            
+            if (session) {
+                authStatusEl.innerHTML = `<i class="fas fa-check-circle"></i> 已登录为: ${session.user.email}`;
+                authStatusEl.classList.add('authenticated');
+                postSectionEl.style.display = 'block';
+            } else {
+                authStatusEl.innerHTML = '<i class="fas fa-info-circle"></i> 未登录';
+                authStatusEl.classList.remove('authenticated');
+                postSectionEl.style.display = 'none';
+                document.getElementById('postsContainer').innerHTML = ''; // 清空帖子列表
+            }
+        }
+
+        // 注册
+        async function signUp() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const { error } = await supabase.auth.signUp({ email, password });
+            if (error) alert('注册失败: ' + error.message);
+        }
+
+        // 登录
+        async function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) alert('登录失败: ' + error.message);
+        }
+
+        // 登出
+        async function signOut() {
+            const { error } = await supabase.auth.signOut();
+            if (error) alert('登出失败: ' + error.message);
+        }
+
+        // 加载所有帖子
+        async function loadPosts() {
+            const { data: posts, error } = await supabase
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('加载帖子失败:', error);
+                return;
+            }
+
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = ''; // 清空容器
+
+            posts.forEach(post => {
+                const postEl = document.createElement('div');
+                postEl.className = 'post';
+                postEl.innerHTML = `
+                    <h3 class="post-title">${post.title}</h3>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-meta">
+                        <i class="fas fa-fingerprint"></i> 帖子ID: ${post.id}
+                    </div>
+                    <div class="form-group">
+                        <textarea id="replyContent-${post.id}" placeholder="请输入回复内容" rows="2"></textarea>
+                    </div>
+                    <button class="btn btn-outline" onclick="createReply(${post.id})">
+                        <i class="fas fa-reply"></i> 回复
+                    </button>
+                    <div id="replies-${post.id}"></div>
+                `;
+                postsContainer.appendChild(postEl);
+                loadReplies(post.id); // 加载这个帖子的回复
+            });
+        }
+
+        // 加载某个帖子的回复
+        async function loadReplies(postId) {
+            const { data: replies, error } = await supabase
+                .from('replies')
+                .select('*')
+                .eq('post_id', postId)
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                console.error('加载回复失败:', error);
+                return;
+            }
+
+            const repliesContainer = document.getElementById(`replies-${postId}`);
+            repliesContainer.innerHTML = '';
+
+            if (replies.length > 0) {
+                repliesContainer.innerHTML = '<div class="divider"></div><h4><i class="fas fa-comments"></i> 回复</h4>';
+            }
+
+            replies.forEach(reply => {
+                const replyEl = document.createElement('div');
+                replyEl.className = 'reply';
+                replyEl.innerHTML = `
+                    <div class="reply-content">${reply.content}</div>
+                    <div class="reply-meta">
+                        <i class="fas fa-fingerprint"></i> 回复ID: ${reply.id}
+                    </div>
+                `;
+                repliesContainer.appendChild(replyEl);
+            });
+        }
+
+        // 创建新帖子
+        async function createPost() {
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+
+            const { error } = await supabase
+                .from('posts')
+                .insert([{ title, content }]);
+
+            if (error) {
+                alert('发帖失败: ' + error.message);
+            } else {
+                alert('发帖成功！');
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postContent').value = '';
+                loadPosts(); // 重新加载帖子列表
+            }
+        }
+
+        // 创建回复
+        async function createReply(postId) {
+            const content = document.getElementById(`replyContent-${postId}`).value;
+
+            const { error } = await supabase
+                .from('replies')
+                .insert([{ post_id: postId, content }]);
+
+            if (error) {
+                alert('回复失败: ' + error.message);
+            } else {
+                document.getElementById(`replyContent-${postId}`).value = '';
+                loadReplies(postId); // 重新加载这个帖子的回复
+            }
+        }
+    </script>
+</body>
+</html>
