@@ -388,6 +388,7 @@
             font-size: 1.5rem;
             margin-right: 10px;
             color: #ffd700;
+            flex-shrink: 0;
         }
         
         .official-header h3 {
@@ -552,6 +553,10 @@
         }
         
         @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
             .flex {
                 flex-direction: column;
             }
@@ -559,10 +564,12 @@
             .btn {
                 width: 100%;
                 margin-right: 0;
+                padding: 14px 20px; /* 增加按钮尺寸便于触摸 */
             }
             
             .official-post {
                 padding: 15px;
+                margin-bottom: 15px;
             }
             
             .official-content {
@@ -577,11 +584,114 @@
                 border-bottom: 1px solid #ddd;
                 border-right: none;
                 text-align: left;
+                padding: 15px;
             }
             
             .tab-btn.active {
                 border-bottom: 1px solid #ddd;
                 border-right: 3px solid var(--secondary-color);
+            }
+            
+            .tab-content {
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+            }
+            
+            /* 帖子样式优化 */
+            .post {
+                padding: 15px;
+                margin-bottom: 15px;
+                border-left-width: 3px;
+            }
+            
+            .post-title {
+                font-size: 1.2rem; /* 减小标题字体大小 */
+                line-height: 1.4;
+            }
+            
+            .post-content {
+                font-size: 0.95rem; /* 调整内容字体大小 */
+                line-height: 1.5;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+            
+            /* 表单元素优化 */
+            input, textarea {
+                padding: 14px; /* 增加内边距便于触摸 */
+                font-size: 16px; /* 防止iOS缩放 */
+            }
+            
+            /* 滑块验证优化 */
+            .slider-container {
+                padding: 12px;
+            }
+            
+            .slider-thumb {
+                width: 36px; /* 增加滑块大小便于触摸 */
+                height: 36px;
+                top: -13px;
+            }
+            
+            /* 模态窗口优化 */
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            /* 官方帖子标题换行优化 */
+            .official-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .official-header i {
+                margin-bottom: 8px;
+            }
+        }
+        
+        /* 针对超小屏幕的额外优化 */
+        @media (max-width: 480px) {
+            header {
+                padding: 20px 0;
+                margin-bottom: 20px;
+            }
+            
+            .logo i {
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .post-title {
+                font-size: 1.1rem;
+            }
+            
+            .post-content {
+                font-size: 0.9rem;
+            }
+            
+            .card-header {
+                padding: 12px 15px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* 防止iOS缩放 */
+        @media screen and (-webkit-min-device-pixel-ratio:0) {
+            select,
+            textarea,
+            input {
+                font-size: 16px;
             }
         }
     </style>
