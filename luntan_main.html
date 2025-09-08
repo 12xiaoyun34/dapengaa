@@ -483,6 +483,74 @@
             background-color: var(--accent-color);
         }
         
+        /* 滑块验证样式 */
+        .slider-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+        }
+        
+        .slider-track {
+            width: 100%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            position: relative;
+            margin: 15px 0;
+        }
+        
+        .slider-thumb {
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 0;
+            cursor: pointer;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .slider-fill {
+            height: 100%;
+            background-color: var(--success-color);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .slider-label {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .slider-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+        
+        .slider-verified {
+            display: none;
+            text-align: center;
+            color: var(--success-color);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .slider-verified i {
+            margin-right: 5px;
+        }
+        
         @media (max-width: 768px) {
             .flex {
                 flex-direction: column;
@@ -592,7 +660,22 @@
                         <textarea id="postContent" placeholder="请输入帖子内容" rows="4"></textarea>
                     </div>
                     
-                    <button class="btn" onclick="createPost()">
+                    <!-- 滑块验证区域 -->
+                    <div class="slider-container">
+                        <div class="slider-label">请拖动滑块完成验证</div>
+                        <div class="slider-track">
+                            <div class="slider-fill"></div>
+                            <div class="slider-thumb" id="postSliderThumb">
+                                <i class="fas fa-arrows-alt-h"></i>
+                            </div>
+                        </div>
+                        <div class="slider-caption">将滑块拖动到最右端以验证</div>
+                        <div class="slider-verified" id="postSliderVerified">
+                            <i class="fas fa-check-circle"></i> 验证成功
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="validateAndCreatePost()">
                         <i class="fas fa-paper-plane"></i> 发布
                     </button>
                 </div>
@@ -626,7 +709,7 @@
         </div>
     </div>
 
-    <!-- 模态窗口 -->
+    <!-- 验证邮件模态窗口 -->
     <div class="modal" id="verificationModal">
         <div class="modal-content">
             <div class="modal-icon">
@@ -638,6 +721,36 @@
         </div>
     </div>
 
+    <!-- 回复验证模态窗口 -->
+    <div class="modal" id="replyModal">
+        <div class="modal-content">
+            <h3>回复验证</h3>
+            
+            <div class="slider-container">
+                <div class="slider-label">请拖动滑块完成验证</div>
+                <div class="slider-track">
+                    <div class="slider-fill" id="modalSliderFill"></div>
+                    <div class="slider-thumb" id="modalSliderThumb">
+                        <i class="fas fa-arrows-alt-h"></i>
+                    </div>
+                </div>
+                <div class="slider-caption">将滑块拖动到最右端以验证</div>
+                <div class="slider-verified" id="modalSliderVerified">
+                    <i class="fas fa-check-circle"></i> 验证成功
+                </div>
+            </div>
+            
+            <div class="flex" style="justify-content: center; margin-top: 20px;">
+                <button class="btn" id="modalConfirmBtn" disabled>
+                    <i class="fas fa-check"></i> 确认发布
+                </button>
+                <button class="btn btn-danger" onclick="closeReplyModal()">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 引入 Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -645,6 +758,192 @@
         const supabaseUrl = 'https://aczncyljzemappjvgkkt.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjem5jeWxqemVtYXBwanZna2t0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNTIzMzcsImV4cCI6MjA3MjgyODMzN30.n3aHiWy1xf6ofM6nRnBlhjs8U0PAz35u25YVmXo3kBY';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 全局变量
+        let pendingPostId = null;
+        let isPostVerified = false;
+        let isModalVerified = false;
+
+        // 初始化滑块功能
+        function initSliders() {
+            // 发帖滑块
+            const postSliderThumb = document.getElementById('postSliderThumb');
+            const postSliderTrack = postSliderThumb.parentElement;
+            const postSliderFill = document.querySelector('#post .slider-fill');
+            const postSliderVerified = document.getElementById('postSliderVerified');
+            
+            // 模态窗口滑块
+            const modalSliderThumb = document.getElementById('modalSliderThumb');
+            const modalSliderTrack = modalSliderThumb.parentElement;
+            const modalSliderFill = document.getElementById('modalSliderFill');
+            const modalSliderVerified = document.getElementById('modalSliderVerified');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            
+            // 设置滑块拖动功能
+            setupSlider(postSliderThumb, postSliderTrack, postSliderFill, postSliderVerified, 
+                       (verified) => { isPostVerified = verified; });
+            
+            setupSlider(modalSliderThumb, modalSliderTrack, modalSliderFill, modalSliderVerified, 
+                       (verified) => { 
+                           isModalVerified = verified; 
+                           modalConfirmBtn.disabled = !verified;
+                       });
+            
+            // 模态窗口确认按钮点击事件
+            modalConfirmBtn.addEventListener('click', () => {
+                if (isModalVerified && pendingPostId !== null) {
+                    const replyContent = document.getElementById(`replyContent-${pendingPostId}`).value;
+                    doCreateReply(pendingPostId, replyContent);
+                    closeReplyModal();
+                }
+            });
+        }
+
+        // 设置滑块功能
+        function setupSlider(thumb, track, fill, verifiedEl, callback) {
+            let isDragging = false;
+            
+            thumb.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                document.addEventListener('mousemove', mouseMoveHandler);
+                document.addEventListener('mouseup', mouseUpHandler);
+                e.preventDefault();
+            });
+            
+            thumb.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                document.addEventListener('touchmove', touchMoveHandler);
+                document.addEventListener('touchend', touchEndHandler);
+                e.preventDefault();
+            });
+            
+            function mouseMoveHandler(e) {
+                if (!isDragging) return;
+                updateSlider(e.clientX);
+            }
+            
+            function touchMoveHandler(e) {
+                if (!isDragging) return;
+                updateSlider(e.touches[0].clientX);
+            }
+            
+            function mouseUpHandler() {
+                isDragging = false;
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.removeEventListener('mouseup', mouseUpHandler);
+                checkVerification();
+            }
+            
+            function touchEndHandler() {
+                isDragging = false;
+                document.removeEventListener('touchmove', touchMoveHandler);
+                document.removeEventListener('touchend', touchEndHandler);
+                checkVerification();
+            }
+            
+            function updateSlider(clientX) {
+                const trackRect = track.getBoundingClientRect();
+                let newPosition = clientX - trackRect.left;
+                
+                // 限制在轨道范围内
+                newPosition = Math.max(0, Math.min(newPosition, trackRect.width));
+                
+                // 更新滑块位置和填充宽度
+                thumb.style.left = `${newPosition - 15}px`; // 减去滑块宽度的一半
+                fill.style.width = `${(newPosition / trackRect.width) * 100}%`;
+            }
+            
+            function checkVerification() {
+                const trackRect = track.getBoundingClientRect();
+                const thumbRect = thumb.getBoundingClientRect();
+                const thumbPosition = thumbRect.left + thumbRect.width / 2 - trackRect.left;
+                
+                // 如果滑块位置接近最右端（95%以上），则认为验证成功
+                if (thumbPosition >= trackRect.width * 0.95) {
+                    thumb.style.left = `${trackRect.width - 15}px`;
+                    fill.style.width = '100%';
+                    verifiedEl.style.display = 'block';
+                    callback(true);
+                } else {
+                    // 如果没有验证成功，重置滑块
+                    thumb.style.left = '0px';
+                    fill.style.width = '0%';
+                    verifiedEl.style.display = 'none';
+                    callback(false);
+                }
+            }
+        }
+
+        // 打开回复模态窗口
+        function openReplyModal(postId) {
+            pendingPostId = postId;
+            document.getElementById('replyModal').style.display = 'flex';
+            
+            // 重置模态窗口滑块
+            const modalSliderThumb = document.getElementById('modalSliderThumb');
+            const modalSliderFill = document.getElementById('modalSliderFill');
+            const modalSliderVerified = document.getElementById('modalSliderVerified');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            
+            modalSliderThumb.style.left = '0px';
+            modalSliderFill.style.width = '0%';
+            modalSliderVerified.style.display = 'none';
+            modalConfirmBtn.disabled = true;
+            isModalVerified = false;
+        }
+
+        // 关闭回复模态窗口
+        function closeReplyModal() {
+            document.getElementById('replyModal').style.display = 'none';
+            pendingPostId = null;
+        }
+
+        // 验证并创建帖子
+        function validateAndCreatePost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            
+            // 检查内容是否为空
+            if (!title || !content) {
+                alert('标题和内容不能为空！');
+                return;
+            }
+            
+            // 检查是否只有空格
+            if (!title.replace(/\s/g, '').length || !content.replace(/\s/g, '').length) {
+                alert('标题和内容不能只包含空格！');
+                return;
+            }
+            
+            // 检查是否完成滑块验证
+            if (!isPostVerified) {
+                alert('请完成滑块验证后再发布！');
+                return;
+            }
+            
+            // 所有验证通过，创建帖子
+            createPost();
+        }
+
+        // 验证并创建回复
+        function validateAndCreateReply(postId) {
+            const content = document.getElementById(`replyContent-${postId}`).value.trim();
+            
+            // 检查内容是否为空
+            if (!content) {
+                alert('回复内容不能为空！');
+                return;
+            }
+            
+            // 检查是否只有空格
+            if (!content.replace(/\s/g, '').length) {
+                alert('回复内容不能只包含空格！');
+                return;
+            }
+            
+            // 打开回复验证模态窗口
+            openReplyModal(postId);
+        }
 
         // 标签页切换功能
         document.querySelectorAll('.tab-btn').forEach(button => {
@@ -788,7 +1087,7 @@
                     <div class="form-group">
                         <textarea id="replyContent-${post.id}" placeholder="请输入回复内容" rows="2"></textarea>
                     </div>
-                    <button class="btn btn-outline" onclick="createReply(${post.id})">
+                    <button class="btn btn-outline" onclick="validateAndCreateReply(${post.id})">
                         <i class="fas fa-reply"></i> 回复
                     </button>
                     <div id="replies-${post.id}"></div>
@@ -846,14 +1145,23 @@
                 alert('发帖成功！');
                 document.getElementById('postTitle').value = '';
                 document.getElementById('postContent').value = '';
+                
+                // 重置滑块验证
+                const postSliderThumb = document.getElementById('postSliderThumb');
+                const postSliderFill = document.querySelector('#post .slider-fill');
+                const postSliderVerified = document.getElementById('postSliderVerified');
+                
+                postSliderThumb.style.left = '0px';
+                postSliderFill.style.width = '0%';
+                postSliderVerified.style.display = 'none';
+                isPostVerified = false;
+                
                 loadPosts(); // 重新加载帖子列表
             }
         }
 
         // 创建回复
-        async function createReply(postId) {
-            const content = document.getElementById(`replyContent-${postId}`).value;
-
+        async function doCreateReply(postId, content) {
             const { error } = await supabase
                 .from('replies')
                 .insert([{ post_id: postId, content }]);
@@ -865,6 +1173,11 @@
                 loadReplies(postId); // 重新加载这个帖子的回复
             }
         }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            initSliders();
+        });
     </script>
 </body>
 </html>
